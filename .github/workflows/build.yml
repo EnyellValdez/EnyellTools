@@ -1,0 +1,39 @@
+name: Build iOS App
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build IPA
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build App
+        run: |
+          xcodebuild -project ThreeOneOSFive.xcodeproj \
+            -scheme 3105 \
+            -configuration Release \
+            -arch arm64 \
+            -sdk iphoneos \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CONFIGURATION_BUILD_DIR=${PWD}/build \
+            build
+
+      - name: Package IPA
+        run: |
+          mkdir -p Payload
+          cp -r build/*.app Payload/
+          zip -r Enyell_TS.ipa Payload
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Enyell_TS
+          path: Enyell_TS.ipa
