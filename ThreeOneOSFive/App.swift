@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 @main
-struct Enyell TSApp: App {
+struct EnyellTSApp: App {
     @StateObject private var appState = AppState()
     @StateObject private var patchDraftCoordinator = PatchDraftCoordinator()
     @StateObject private var fileOperationCoordinator = FileOperationCoordinator()
